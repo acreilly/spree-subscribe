@@ -39,15 +39,15 @@ class Spree::Subscription < ActiveRecord::Base
 
   # DD: TODO pull out into a ReorderBuilding someday
   def reorder
-    raise false unless self.state == 'active'
-
-    create_reorder &&
-    add_subscribed_line_item &&
-    select_shipping &&
-    add_payment &&
-    confirm_reorder &&
-    complete_reorder &&
-    calculate_reorder_date!
+    if self.state == 'active' && self.reorder_on == Date.today
+      create_reorder &&
+      add_subscribed_line_item &&
+      select_shipping &&
+      add_payment &&
+      confirm_reorder &&
+      complete_reorder &&
+      calculate_reorder_date!
+    end
   end
 
   def create_reorder
@@ -63,8 +63,8 @@ class Spree::Subscription < ActiveRecord::Base
     if self.new_order.respond_to?(:store_id)
       self.new_order.store_id = self.line_item.order.store_id
     end
-
-    self.new_order.next # -> address
+    # Returns true if the new order was created successfully
+    self.new_order.present?
   end
 
   def add_subscribed_line_item
@@ -74,6 +74,7 @@ class Spree::Subscription < ActiveRecord::Base
     line_item.price = self.line_item.price
     line_item.save!
 
+    self.new_order.next # -> address
     self.new_order.next # -> delivery
   end
 
