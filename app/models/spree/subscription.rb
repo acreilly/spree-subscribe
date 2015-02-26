@@ -1,6 +1,6 @@
 class Spree::Subscription < ActiveRecord::Base
   include Spree::Concerns::Intervalable
-
+  attr_accessor :new_order
   belongs_to :line_item, :class_name => "Spree::LineItem"
   belongs_to :billing_address, :foreign_key => :billing_address_id, :class_name => "Spree::Address"
   belongs_to :shipping_address, :foreign_key => :shipping_address_id, :class_name => "Spree::Address"
