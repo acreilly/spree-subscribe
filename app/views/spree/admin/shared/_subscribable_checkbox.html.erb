@@ -1,0 +1,9 @@
+<div class="alpha two columns">
+  <%= f.field_container :subscribable, :class => ['checkbox'] do %>
+    <%= f.label :subscribable, t(:subscribable, :scope => :subscribe) %>
+    <%= f.check_box :subscribable %>
+    <%= f.error_message_on :subscribable %>
+  <% end %>
+</div>
+
+<div class="clear"></div>

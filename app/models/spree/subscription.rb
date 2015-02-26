@@ -1,12 +1,10 @@
-require 'concerns/intervalable'
-
 class Spree::Subscription < ActiveRecord::Base
-  attr_accessible :reorder_on, :user_id, :times, :time_unit, :line_item_id, :billing_address_id, :state,
-    :shipping_address_id, :shipping_method_id, :payment_method_id, :source_id, :source_type
+  include Spree::Concerns::Intervalable
+  # params_for :subscription, :reorder_on, :user_id, :times, :time_unit, :line_item_id, :billing_address_id, :state,
+    # :shipping_address_id, :shipping_method_id, :payment_method_id, :source_id, :source_type
 
-  include Intervalable
 
-  attr_accessor :new_order
+  # attr_accessor :new_order
 
   belongs_to :line_item, :class_name => "Spree::LineItem"
   belongs_to :billing_address, :foreign_key => :billing_address_id, :class_name => "Spree::Address"
@@ -19,18 +17,18 @@ class Spree::Subscription < ActiveRecord::Base
 
   has_many :reorders, :class_name => "Spree::Order"
 
-  scope :active, where(:state => 'active')
-  scope :post_cart, where("state != ?", "cart")
+  scope :active, -> {where(:state => 'active')}
+  scope :post_cart, -> {where("state != ?", "cart")}
 
-  state_machine :state, :initial => 'cart' do
+  state_machine :state, :initial => :cart do
     event :suspend do
-      transition :to => 'inactive', :from => 'active'
+      transition :to => :inactive, :from => :active
     end
     event :start, :resume do
-      transition :to => 'active', :from => ['cart','inactive']
+      transition :to => :active, :from => [:cart,:inactive]
     end
     event :cancel do
-      transition :to => 'cancelled', :from => 'active'
+      transition :to => :canceled, :from => :active
     end
 
     after_transition :on => :start, :do => :set_checkout_requirements
@@ -111,6 +109,10 @@ class Spree::Subscription < ActiveRecord::Base
     save
   end
 
+  def time_unit_symbol
+      UNITS[time_unit]
+    end
+
   private
 
   # DD: if resuming an old subscription
@@ -126,6 +128,7 @@ class Spree::Subscription < ActiveRecord::Base
     order = self.line_item.order
     # DD: TODO: set quantity?
     calculate_reorder_date!
+    binding.pry
     update_attributes(
       :billing_address_id => order.bill_address_id,
       :shipping_address_id => order.ship_address_id,
@@ -133,7 +136,8 @@ class Spree::Subscription < ActiveRecord::Base
       :payment_method_id => order.payments.first.payment_method_id,
       :source_id => order.payments.first.source_id,
       :source_type => order.payments.first.source_type,
-      :user_id => order.user_id
+      :user_id => order.user_id,
+      line_item: self.line_item
     )
   end
 

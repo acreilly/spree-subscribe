@@ -6,6 +6,7 @@ Spree::Core::Engine.routes.draw do
       end
     end
     resources :subscriptions, :except => [:new,:create]
+    put "/subscriptions/:id/activate" => "subscriptions#activate", as: :subscription_activate
   end
 
   resources :subscriptions, :only => [:destroy]

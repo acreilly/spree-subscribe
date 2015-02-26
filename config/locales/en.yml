@@ -15,7 +15,6 @@ en:
     are_you_sure_suspend: "Are you sure that you want to suspend this subscription?"
     resume_subscription: "Resume"
     subscribable: "Subscribable?"
-    subscribed_price: "Subscription Price"
     intervals: "Subscription Intervals"
     listing_subscriptions: "Listing Subscriptions"
     edit: "Edit Subscription"

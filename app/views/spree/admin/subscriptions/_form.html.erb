@@ -25,7 +25,12 @@
     <%= select_tag "subscription[time_unit]", options_for_select( Spree::Subscription::UNITS.invert.to_a, @subscription.time_unit ) %>
   <% end %>
 
-  <%= render :partial => 'spree/admin/shared/edit_resource_links' %>
+<div class="form-buttons filter-actions actions" data-hook="buttons">
+    <%= button Spree.t('actions.update'), 'icon-refresh' %>
+    <span class="or"><%= Spree.t(:or) %></span>
+    <%= button_link_to Spree.t('actions.cancel'), admin_subscriptions_path, :icon => 'icon-remove' %>
+  </div>
+
 
 <% end %>
 

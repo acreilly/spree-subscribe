@@ -4,4 +4,7 @@ Spree::LineItem.class_eval do
 
   accepts_nested_attributes_for :subscription
 
+  def subscribable?
+    product.subscribable
+  end
 end
