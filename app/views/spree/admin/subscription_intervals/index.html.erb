@@ -21,6 +21,7 @@
   <thead>
     <th><%= t(:name, :scope => :intervals) %></th>
     <th colspan="2"><%= t(:time, :scope => :intervals) %></th>
+    <th colspan="2"><%= t(:time_length, :scope => :intervals) %></th>
     <th data-hook="admin_stores_index_header_actions" class="actions"></th>
   </thead>
   <tbody>
@@ -29,6 +30,7 @@
         <td><%= interval.name %></td>
         <td><%= interval.times %></td>
         <td><%= interval.time_unit_symbol.to_s.titleize %></td>
+        <td><%= interval.time_length_title %></td>
         <td data-hook="admin_subscription_intervals_index_row_actions" class="actions">
           <%= link_to_edit interval, :no_text => true %> &nbsp;
           <%= link_to_delete interval, :no_text => true %>

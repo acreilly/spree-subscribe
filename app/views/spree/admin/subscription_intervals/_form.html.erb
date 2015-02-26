@@ -12,4 +12,12 @@
 
   <%= error_message_on :subscription_interval, :time_unit, :class => 'fullwidth title' %>
   <%= select_tag "subscription_interval[time_unit]", options_for_select( Spree::SubscriptionInterval::UNITS.invert.to_a, f.object.time_unit ) %>
+
+<br>
+<label><%= t(:time_length, :scope => :intervals) %> <span class="required">*</span></label><br />
+  <%= error_message_on :subscription_interval, :time_length, :class => 'fullwidth title' %>
+  <%= number_field :subscription_interval, :time_length %>
+
+    <%= error_message_on :subscription_interval, :time_unit_length, :class => 'fullwidth title' %>
+  <%= select_tag "subscription_interval[time_unit_length]", options_for_select( Spree::SubscriptionInterval::UNITS.invert.to_a, f.object.time_unit_length ) %>
 </div>

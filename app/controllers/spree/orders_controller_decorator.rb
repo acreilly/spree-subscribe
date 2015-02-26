@@ -54,9 +54,9 @@ Spree::OrdersController.class_eval do
 
     # DD: create subscription
     if line_item.subscription
-      line_item.subscription.update_attributes :times => interval.times, :time_unit => interval.time_unit, line_item: line_item.id
+      line_item.subscription.update_attributes :times => interval.times, :time_unit => interval.time_unit, time_length: interval.time_length, time_unit_length: interval.time_unit_length, line_item: line_item.id
     else
-      line_item.subscription = Spree::Subscription.create :times => interval.times, :time_unit => interval.time_unit, line_item_id: line_item.id
+      line_item.subscription = Spree::Subscription.create :times => interval.times, :time_unit => interval.time_unit, time_length: interval.time_length, time_unit_length: interval.time_unit_length, line_item_id: line_item.id
     end
 
     line_item.save

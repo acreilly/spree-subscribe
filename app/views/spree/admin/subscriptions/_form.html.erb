@@ -24,6 +24,21 @@
     <%= error_message_on :subscription, :time_unit, :class => 'fullwidth title' %>
     <%= select_tag "subscription[time_unit]", options_for_select( Spree::Subscription::UNITS.invert.to_a, @subscription.time_unit ) %>
   <% end %>
+  <%= f.field_container :time do %>
+    <label><%= t(:time_length, :scope => :intervals) %> <span class="required">*</span></label><br />
+
+    <%= error_message_on :subscription, :time_length, :class => 'fullwidth title' %>
+    <%= number_field :subscription, :time_length %>
+
+    <%= error_message_on :subscription, :time_unit_length, :class => 'fullwidth title' %>
+    <%= select_tag "subscription[time_unit_length]", options_for_select( Spree::Subscription::UNITS.invert.to_a, @subscription.time_unit_length ) %>
+  <% end %>
+    <%= f.field_container :remaining_time do %>
+    <%= f.label :remaining_time, t(:remaining_time, :scope => :subscribe) %> <span class="required">*</span><br />
+    <%= error_message_on :subscription, :remaining_time, :class => 'fullwidth title' %>
+    <%= f.number_field :remaining_time, value: @subscription.remaining_time  %>
+  <% end %>
+
 
 <div class="form-buttons filter-actions actions" data-hook="buttons">
     <%= button Spree.t('actions.update'), 'icon-refresh' %>

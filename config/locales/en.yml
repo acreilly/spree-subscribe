@@ -20,12 +20,15 @@ en:
     edit: "Edit Subscription"
     back_to_list: "Back to Subscriptions"
     none_found: "No subscriptions were found"
+    time_length: "Duration"
+    remaining: "Remaining"
   intervals:
     new: "New Subscription Interval"
     edit: "Edit Subscription Interval"
     back_to_intervals_list: "Back to Subscription Intervals"
     name: "Display Name"
     time: "Reorders every"
+    time_length: "Duration"
 
   subscriptions_config_label: "Subscriptions"
   subscription_intervals: "Subscription Intervals"

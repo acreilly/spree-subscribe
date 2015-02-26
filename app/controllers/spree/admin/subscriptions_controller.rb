@@ -33,7 +33,7 @@ module Spree
       private
 
       def subscription_params
-        params.require(:subscription).permit(:reorder_on, :state, :times, :time_unit)
+        params.require(:subscription).permit(:reorder_on, :state, :times, :time_unit, :time_length, :time_length_unit, :remaining_time)
       end
     end
   end

@@ -3,7 +3,9 @@ class CreateSpreeSubscriptionIntervals < ActiveRecord::Migration
     create_table :spree_subscription_intervals do |t|
       t.string :name
       t.integer :times
+      t.integer :time_length
       t.integer :time_unit
+      t.integer :time_unit_length
       t.timestamps
     end
 

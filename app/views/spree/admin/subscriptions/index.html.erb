@@ -30,6 +30,8 @@
           <th class="subscription-price"><%= t(:price, :scope => :subscribe) %></th>
           <th class="subscription-interval"><%= t(:interval, :scope => :subscribe) %></th>
           <th class="subscription-reorder-date"><%= t(:reorder_on, :scope => :subscribe) %></th>
+          <th class="subscription-reorder-date"><%= t(:time_length, :scope => :subscribe) %></th>
+          <th class="subscription-reorder-date"><%= t(:remaining, :scope => :subscribe) %></th>
           <th class="subscription-status"><%= t(:state, :scope => :subscribe) %></th>
           <th class="actions subscription-actions">&nbsp;</th>
         </tr>
@@ -47,6 +49,16 @@
         <td class="subscription-reorder-date">
           <% if sub.active? %>
             <%= l sub.reorder_on.to_date %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td class="subscription-duration">
+        <%= sub.time_length_title %>
+        </td>
+        <td class="subscription-remaining">
+          <% if sub.active? %>
+            <%= sub.remaining_time %>
           <% else %>
             -
           <% end %>

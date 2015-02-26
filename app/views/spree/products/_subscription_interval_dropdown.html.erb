@@ -8,4 +8,5 @@
     <%- options = @product.subscription_intervals.collect{|i| [i.name,i.id] } %>
     <%= select_tag "subscriptions[interval_id]", options_for_select(options) %>
   </div>
+
 <% end %>

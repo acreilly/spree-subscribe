@@ -9,7 +9,10 @@ class CreateSpreeSubscriptions < ActiveRecord::Migration
       t.references :source, :polymorphic => true
       t.references :user
       t.integer :times
+      t.integer :time_length
       t.integer :time_unit
+      t.integer :time_unit_length
+      t.integer :remaining_time
       t.string :state
       t.date :reorder_on
       t.timestamps
