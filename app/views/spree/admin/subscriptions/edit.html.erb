@@ -19,4 +19,7 @@
   <div id="order-form-wrapper">
     <%= render :partial => 'form', :locals => { :order => @subscription } %>
   </div>
+<div id="addresses">
+  <%= render partial: "user_address", locals: {subscription: @subscription} %>
+</div>
 </div>

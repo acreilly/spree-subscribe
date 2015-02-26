@@ -1,0 +1,28 @@
+<% unless subscription.billing_address.nil? %>
+<dt><%= Spree.t(:billing_address) %></dt>
+<dd>
+ <%= subscription.billing_address.address1 %>
+ <%= subscription.billing_address.address2 unless nil  %>
+ <br>
+ <%= subscription.billing_address.city  %>
+ <%= ", " + Spree::State.find(subscription.billing_address.state_id).to_s unless nil %>
+ <br>
+ <%= subscription.billing_address.country unless nil  %>
+ <br>
+ <%= subscription.billing_address.zipcode unless nil  %>
+</dd>
+<br>
+<br>
+<dt><%= Spree.t(:shipping_address) %> </dt>
+<dd>
+ <%= subscription.shipping_address.address1  %>
+ <%= subscription.shipping_address.address2 unless nil %>
+ <br>
+ <%= subscription.shipping_address.city %>
+ <%= ", " + Spree::State.find(subscription.shipping_address.state_id).to_s unless nil %>
+ <br>
+ <%= subscription.shipping_address.country unless nil %>
+ <br>
+ <%= subscription.shipping_address.zipcode unless nil %>
+</dd>
+<% end %>

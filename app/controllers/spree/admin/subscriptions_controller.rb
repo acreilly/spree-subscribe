@@ -15,7 +15,6 @@ module Spree
 
       def update
         @subscription = Spree::Subscription.find(params['id'])
-        binding.pry
         if @subscription.update_attributes(subscription_params)
           flash[:success] = 'Subscription Updated'
           redirect_to admin_subscriptions_url

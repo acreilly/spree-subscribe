@@ -32,10 +32,10 @@ Spree::OrdersController.class_eval do
   # +:subscriptions => { variant_id => interval_id, variant_id => interval_id }
   def check_subscriptions
     return unless params[:subscriptions] && params[:subscriptions][:active].to_s == "1"
+
     params[:products].each do |product_id,variant_id|
       add_subscription variant_id, params[:subscriptions][:interval_id]
     end if params[:products]
-
     Spree::Variant.where(id: params[:variant_id]).each do |variant_id, quantity|
       add_subscription params[:variant_id], params[:subscriptions][:interval_id]
     end if params[:variant_id]
@@ -54,20 +54,19 @@ Spree::OrdersController.class_eval do
 
     # DD: create subscription
     if line_item.subscription
-      line_item.subscription.update_attributes :times => interval.times, :time_unit => interval.time_unit, line_item: line_item
+      line_item.subscription.update_attributes :times => interval.times, :time_unit => interval.time_unit, line_item: line_item.id
     else
-      binding.pry
-      line_item.subscription = Spree::Subscription.create :times => interval.times, :time_unit => interval.time_unit, line_item: line_item
+      line_item.subscription = Spree::Subscription.create :times => interval.times, :time_unit => interval.time_unit, line_item_id: line_item.id
     end
 
     line_item.save
 
     line_item.subscription
   end
+
   def update_subscriptions
     @order.line_items.each do |line_item|
-      if line_item.subscribable? && line_item.subscription.blank?
-        binding.pry
+      if params["subscribe_#{line_item.id}"] && line_item.subscription.blank?
         add_subscription line_item.variant_id, subscription_interval_id(line_item.variant_id)
       elsif line_item.subscription.present? && !params["subscribe_#{line_item.id}"]
         delete_subscription line_item

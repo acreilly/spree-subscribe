@@ -1,10 +1,5 @@
 class Spree::Subscription < ActiveRecord::Base
   include Spree::Concerns::Intervalable
-  # params_for :subscription, :reorder_on, :user_id, :times, :time_unit, :line_item_id, :billing_address_id, :state,
-    # :shipping_address_id, :shipping_method_id, :payment_method_id, :source_id, :source_type
-
-
-  # attr_accessor :new_order
 
   belongs_to :line_item, :class_name => "Spree::LineItem"
   belongs_to :billing_address, :foreign_key => :billing_address_id, :class_name => "Spree::Address"
@@ -128,7 +123,7 @@ class Spree::Subscription < ActiveRecord::Base
     order = self.line_item.order
     # DD: TODO: set quantity?
     calculate_reorder_date!
-    binding.pry
+
     update_attributes(
       :billing_address_id => order.bill_address_id,
       :shipping_address_id => order.ship_address_id,
