@@ -10,11 +10,14 @@ module Spree
       end
 
       def edit
-        @subscription = Spree::Subscription.find(params['id'])
+        @subscription = Spree::Subscription.find(params[:id])
       end
 
       def update
-        @subscription = Spree::Subscription.find(params['id'])
+        @subscription = Spree::Subscription.find(params[:id])
+        if @subscription.state == "inactive" && @subscription.state != params[:subscription][:state]
+          @subscription.resume
+        end
         if @subscription.update_attributes(subscription_params)
           flash[:success] = 'Subscription Updated'
           redirect_to admin_subscriptions_url

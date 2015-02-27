@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Spree::Subscription do
   before(:all) do
     # DD: need a fake payment method for test environment
-    create(:authorize_net_payment_method)
+    FactoryGirl.create(:payment)
   end
 
   context "that is in 'cart' state" do
