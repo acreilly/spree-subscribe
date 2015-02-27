@@ -22,6 +22,10 @@ en:
     none_found: "No subscriptions were found"
     time_length: "Duration"
     remaining: "Remaining"
+    subscription_ended: Subscription ended
+    subscription_ended_for: "Subscription for %{email} has ended!"
+    subscription_ending: Subscription ending
+    subscription_ending_for: "Subscription for %{email} is ending!"
   intervals:
     new: "New Subscription Interval"
     edit: "Edit Subscription Interval"

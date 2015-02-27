@@ -42,6 +42,9 @@ class Spree::Subscription < ActiveRecord::Base
       calculate_reorder_date! &&
       calculate_remaining_time! &&
       check_remaining_time
+      if self.remaining_time == 0
+        self.notify_ending!
+      end
     end
   end
 
@@ -148,6 +151,8 @@ class Spree::Subscription < ActiveRecord::Base
       end
       result -= 1
       self.remaining_time = result
+    elsif self.remaining_time <= 0
+      self.remaining_time = 0
     else
       self.remaining_time -= 1
     end
@@ -156,15 +161,25 @@ class Spree::Subscription < ActiveRecord::Base
 
   def check_remaining_time
     if self.remaining_time <= 0
-      Spree::Subscription.destroy(self.id)
+      self.remaining_time = nil
+      self.suspend
+      self.notify_ended!
     end
+  end
+
+  def notify_ended!
+    Spree::SubscriptionMailer.subscription_ended_email(self).deliver
+  end
+
+  def notify_ending!
+    Spree::SubscriptionMailer.subscription_ending_email(self).deliver
   end
 
   private
 
   # DD: if resuming an old subscription
   def check_reorder_date
-    if reorder_on <= Date.today
+    if reorder_on.nil? || reorder_on <= Date.today
       reorder_on = Date.tomorrow
       save
     end

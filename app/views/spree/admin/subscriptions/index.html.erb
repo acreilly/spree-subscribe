@@ -44,7 +44,7 @@
           <%= sub.line_item.variant.options_text %>
         </td>
         <td class="subscription-user"><%= link_to(sub.user.email, :controller => "spree/admin/users", :action => "show", :id => sub.user.id) if sub.user %></td>
-        <td class="subscription-price"><%= sub.line_item.price %></td>
+        <td class="subscription-price"><%= Spree::Money.new(sub.line_item.price) %></td>
         <td class="subscription-interval"><%= sub.time_title %></td>
         <td class="subscription-reorder-date">
           <% if sub.active? %>
@@ -66,7 +66,7 @@
         <td class="subscription-status"><%= sub.state.titleize %></td>
         <td class='actions subscription-actions align-center' data-hook="admin_subscriptions_index_row_actions">
           <%= link_to_edit_url edit_admin_subscription_path(sub), :title => "admin_edit_#{dom_id(sub)}", :no_text => true %>
-          <% unless sub.active? %>
+          <% if sub.cart? %>
             <%= form_tag admin_subscription_activate_path(sub), method: :put do %>
               <%= submit_tag "Activate" %>
             <% end %>

@@ -8,9 +8,9 @@
           <th class="subscription-product"><%= t(:product, :scope => :subscribe) %></th>
           <th class="subscription-price"><%= t(:price, :scope => :subscribe) %></th>
           <th class="subscription-interval"><%= t(:interval, :scope => :subscribe) %></th>
+          <th class="subscription-interval"><%= t(:duration, :scope => :subscribe) %></th>
           <th class="subscription-reorder-date"><%= t(:reorder_on, :scope => :subscribe) %></th>
           <th class="subscription-status"><%= t(:state, :scope => :subscribe) %></th>
-          <th class="subscription-actions">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -20,8 +20,9 @@
             <span class="product-name"><%= sub.line_item.variant.name %></span><br/>
             <%= sub.line_item.variant.options_text %>
           </td>
-          <td class="subscription-price"><%= money sub.line_item.price %></td>
+          <td class="subscription-price"><%= Spree::Money.new(sub.line_item.price) %></td>
           <td class="subscription-interval"><%= sub.time_title %></td>
+          <td class="subscription-interval"><%= sub.time_length_title %></td>
           <td class="subscription-reorder-date">
             <% if sub.active? %>
               <%= l sub.reorder_on.to_date %>
