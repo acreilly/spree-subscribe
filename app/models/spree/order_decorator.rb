@@ -1,6 +1,14 @@
 Spree::Order.class_eval do
   belongs_to :subscription, :class_name => "Spree::Subscription"
 
+  # Spree::Order.state_machine.after_transition :to => :complete, :do => :activate_subscriptions!
+  # had to add state machine to actual project to get it to work
+
+  def activate_subscriptions!
+    line_items.each do |line_item|
+      line_item.subscription.start if line_item.subscription
+    end
+  end
   # DD: not unit tested
   def shipment_for_variant(variant)
     shipments.select{|s| s.include?(variant) }.first
