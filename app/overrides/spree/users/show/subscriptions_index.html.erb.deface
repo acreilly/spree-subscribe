@@ -9,6 +9,7 @@
           <th class="subscription-price"><%= t(:price, :scope => :subscribe) %></th>
           <th class="subscription-interval"><%= t(:interval, :scope => :subscribe) %></th>
           <th class="subscription-interval"><%= t(:duration, :scope => :subscribe) %></th>
+          <th class="subscription-interval"><%= t(:remaining, :scope => :subscribe) %></th>
           <th class="subscription-reorder-date"><%= t(:reorder_on, :scope => :subscribe) %></th>
           <th class="subscription-status"><%= t(:state, :scope => :subscribe) %></th>
         </tr>
@@ -23,6 +24,9 @@
           <td class="subscription-price"><%= Spree::Money.new(sub.line_item.price) %></td>
           <td class="subscription-interval"><%= sub.time_title %></td>
           <td class="subscription-interval"><%= sub.time_length_title %></td>
+          <td class="subscription-remaining">
+              <%= sub.remaining_time %>
+            </td>
           <td class="subscription-reorder-date">
             <% if sub.active? %>
               <%= l sub.reorder_on.to_date %>
