@@ -42,7 +42,7 @@ class Spree::Subscription < ActiveRecord::Base
       calculate_reorder_date! &&
       calculate_remaining_time! &&
       check_remaining_time
-      if self.remaining_time == 0
+      if self.remaining_time == 1
         self.notify_ending!
       end
     end
@@ -168,11 +168,11 @@ class Spree::Subscription < ActiveRecord::Base
   end
 
   def notify_ended!
-    Spree::SubscriptionMailer.subscription_ended_email(self).deliver
+    Spree::SubscriptionMailer.subscription_ended_email(self.line_item.name, self.user.email).deliver
   end
 
   def notify_ending!
-    Spree::SubscriptionMailer.subscription_ending_email(self).deliver
+    Spree::SubscriptionMailer.subscription_ending_email(self.line_item.name, self.user.email).deliver
   end
 
   private
