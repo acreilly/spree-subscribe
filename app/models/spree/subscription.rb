@@ -149,7 +149,9 @@ class Spree::Subscription < ActiveRecord::Base
             result = self.times * self.times_length
         end
       end
-      result -= 1
+      unless self.reorder_on.nil?
+        result -= 1
+      end
       self.remaining_time = result
     elsif self.remaining_time <= 0
       self.remaining_time = 0
@@ -162,6 +164,7 @@ class Spree::Subscription < ActiveRecord::Base
   def check_remaining_time
     if self.remaining_time <= 0
       self.remaining_time = nil
+      self.reorder_on = nil
       self.suspend
       self.notify_ended!
     end

@@ -43,6 +43,10 @@
               <%= link_to t(:resume_subscription, :scope => :subscribe), subscription_path(sub), :method => :delete %>
             <% end %>
           </td>
+          <% if sub.inactive? && sub.reorder_on.nil? %>
+      <%= link_to "Reup", subscription_path(sub), method: :put %>
+
+      <% end %>
       <% end %>
       </tbody>
     </table>
