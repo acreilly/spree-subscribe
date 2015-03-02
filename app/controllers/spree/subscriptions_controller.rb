@@ -9,9 +9,12 @@ class Spree::SubscriptionsController < Spree::StoreController
   end
 
   def update
-    @subscription.start
-    @subscription.reorder
-
+    if !@subscription.active?
+      @subscription.start
+      @subscription.reorder
+    else
+      @subscription.update_attributes(remaining_time: @subscription.remaining_time + @subscription.get_remaining_time)
+    end
     redirect_to account_url
   end
 end
