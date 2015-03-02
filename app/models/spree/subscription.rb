@@ -111,44 +111,7 @@ class Spree::Subscription < ActiveRecord::Base
 
   def calculate_remaining_time!
     if self.remaining_time.nil?
-      case self.time_unit_length_symbol
-      when :year
-        case self.time_unit_symbol
-        when :year
-            result = 1 / self.times * self.time_length
-        when :month
-            result = 12 / self.times * self.time_length
-        when :week
-            result = 52 / self.times * self.time_length
-        when :day
-            if Date.today.leap?
-              result = 366 / self.times * self.time_length
-            else
-              result = 365 / self.times * self.time_length
-            end
-        end
-      when :month
-        case self.time_unit_symbol
-        when :month
-            result = self.times * self.time_length
-        when :week
-            result = 4 / self.times * self.times_length
-        when :day
-            result = Time.now.end_of_month.day / self.times * self.times_length
-        end
-      when :week
-        case self.time_unit_symbol
-        when :week
-            result = self.times * self.times_length
-        when :day
-            result = 7 / self.times * self.times_length
-        end
-      when :day
-        case self.time_unit_symbol
-        when :day
-            result = self.times * self.times_length
-        end
-      end
+      result = get_remaining_time
       unless self.reorder_on.nil?
         result -= 1
       end
@@ -159,6 +122,48 @@ class Spree::Subscription < ActiveRecord::Base
       self.remaining_time -= 1
     end
     save
+  end
+
+  def get_remaining_time
+    case self.time_unit_length_symbol
+    when :year
+      case self.time_unit_symbol
+      when :year
+        result = 1 / self.times * self.time_length
+      when :month
+        result = 12 / self.times * self.time_length
+      when :week
+        result = 52 / self.times * self.time_length
+      when :day
+        if Date.today.leap?
+          result = 366 / self.times * self.time_length
+        else
+          result = 365 / self.times * self.time_length
+        end
+      end
+    when :month
+      case self.time_unit_symbol
+      when :month
+        result = self.times * self.time_length
+      when :week
+        result = 4 / self.times * self.times_length
+      when :day
+        result = Time.now.end_of_month.day / self.times * self.times_length
+      end
+    when :week
+      case self.time_unit_symbol
+      when :week
+        result = self.times * self.times_length
+      when :day
+        result = 7 / self.times * self.times_length
+      end
+    when :day
+      case self.time_unit_symbol
+      when :day
+        result = self.times * self.times_length
+      end
+    end
+    return result
   end
 
   def check_remaining_time
