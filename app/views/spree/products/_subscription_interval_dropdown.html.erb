@@ -1,6 +1,6 @@
 <% if @product.subscribable? && @product.subscription_intervals.any? %>
   <%- #DD: when supporting multiple variants at a time: variant_id = @product.has_variants? ? @product.variants.first.id : @product.master.id %>
-  <div>
+  <div class="subscription-options">
     <%= radio_button_tag "subscriptions[active]", 0, true %> One-time Purchase
   </div>
   <div>
