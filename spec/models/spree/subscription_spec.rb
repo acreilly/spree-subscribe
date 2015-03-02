@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe Spree::Subscription do
+  it { should belong_to :line_item }
+  it { should belong_to :billing_address }
+  it { should belong_to :shipping_address }
+  it { should belong_to :shipping_method }
+  it { should belong_to :payment_method }
+  it { should belong_to :user }
+  it { should have_many :reorders }
+
   before(:all) do
     # DD: need a fake payment method for test environment
     FactoryGirl.create(:payment)
@@ -8,7 +16,7 @@ describe Spree::Subscription do
 
   context "that is in 'cart' state" do
     before(:each) do
-      @sub = create :subscription
+      @sub = create :cart_subscription
       @sub.line_item.order.reload
     end
 
@@ -73,12 +81,10 @@ describe Spree::Subscription do
 
     it "should have reorder_on reset" do
       @sub.reorder_on.should eq(Date.today)
-      @sub.reorder.should be_true
       @sub.reorder_on.should eq(Date.today + 3.month)
     end
 
     it "should have a valid order" do
-      @sub.reorder.should be_true
       @sub.reorders.count.should eq(1)
     end
 
@@ -150,8 +156,6 @@ describe Spree::Subscription do
     end
 
     it "should have a completed order" do
-      @sub.reorder.should be_true
-
       order = @sub.reorders.first
       order.state.should eq("complete")
       order.completed?.should be

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Spree::SubscriptionInterval do
+  it {should have_and_belong_to_many :products}
 
   before(:each) do
     @interval = create(:subscription_interval)
