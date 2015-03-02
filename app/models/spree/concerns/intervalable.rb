@@ -33,6 +33,10 @@ module Spree::Concerns
         "#{time_length} #{time_unit_length_symbol.to_s.pluralize(time_length).titleize}"
       end
 
+      def full_title
+        "#{times} #{time_unit_symbol.to_s.pluralize(times).titleize} for #{time_length} #{time_unit_length_symbol.to_s.pluralize(time_length).titleize}"
+      end
+
       # ex: 3.months
       def time
         times.try( time_unit_symbol )
