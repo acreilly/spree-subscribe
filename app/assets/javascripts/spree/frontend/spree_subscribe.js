@@ -1,4 +1,3 @@
-###
 (function($) {
   $(document).ready(function(){
     if ($("#product-variants").length) {
@@ -53,4 +52,3 @@
   }
 
 })(jQuery);
-###
