@@ -60,7 +60,7 @@ Spree::OrdersController.class_eval do
     end
 
     line_item.save
-
+    current_order.update_attributes(subscription_id: line_item.subscription.id)
     line_item.subscription
   end
 

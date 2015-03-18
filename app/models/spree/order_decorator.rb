@@ -5,6 +5,7 @@ Spree::Order.class_eval do
   def subscriptions
     self.variants.joins(:product).where(spree_products: {subscribable: true})
   end
+
   def activate_subscriptions!
     line_items.each do |line_item|
       line_item.subscription.start if line_item.subscription
