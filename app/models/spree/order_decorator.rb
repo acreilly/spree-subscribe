@@ -18,7 +18,7 @@ Spree::Order.class_eval do
 
   # DD: not unit tested
   def shipping_method_for_variant(variant)
-    shipment_for_variant(variant).shipping_method
+    shipment_for_variant(variant).try(:shipping_method)
   end
 
 end
