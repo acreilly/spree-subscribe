@@ -18,8 +18,10 @@ Spree::LineItem.class_eval do
   end
 
   def subscription_quantity
-    unless order.subscriptions.length <= 1 && subscription_quantity_is_one?
-      errors.add(:quantity, "Only one subscription can be added to an order at a time.")
+    if subscribable?
+      unless order.subscriptions.length <= 1 && subscription_quantity_is_one?
+        errors.add(:quantity, "Only one subscription can be added to an order at a time.")
+      end
     end
   end
 end
