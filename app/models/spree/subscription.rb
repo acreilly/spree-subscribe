@@ -84,9 +84,8 @@ class Spree::Subscription < ActiveRecord::Base
       raise "No rate was found. TODO: Implement logic to select the cheapest rate." unless rate
       shipment.selected_shipping_rate_id = rate.id
       shipment.save
-    else
-      self.new_order.next
     end
+    save
   end
 
   def add_payment
