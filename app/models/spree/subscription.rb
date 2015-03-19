@@ -36,7 +36,7 @@ class Spree::Subscription < ActiveRecord::Base
       create_reorder &&
       add_subscribed_line_item
 
-      select_shipping unless self.line_item.order.shipments.nil?
+      select_shipping if self.line_item.order.shipments.any?
 
       add_payment &&
       confirm_reorder &&
