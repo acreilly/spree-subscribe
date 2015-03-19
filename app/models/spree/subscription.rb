@@ -203,7 +203,7 @@ class Spree::Subscription < ActiveRecord::Base
 
     update_attributes(
       :billing_address_id => order.bill_address_id,
-      :shipping_address_id => order.ship_address_id,
+      :shipping_address_id => order.ship_address_id || order.bill_address_id,
       :shipping_method_id => shipping_method_id,
       :payment_method_id => order.payments.first.payment_method_id,
       :source_id => order.payments.first.source_id,
