@@ -34,10 +34,8 @@ class Spree::Subscription < ActiveRecord::Base
   def reorder
     if self.state == 'active' && self.reorder_on == Date.today
       create_reorder &&
-      add_subscribed_line_item
-
-      select_shipping if self.line_item.order.shipments.any?
-
+      add_subscribed_line_item &&
+      select_shipping &&
       add_payment &&
       confirm_reorder &&
       complete_reorder &&
@@ -78,12 +76,16 @@ class Spree::Subscription < ActiveRecord::Base
   end
 
   def select_shipping
-    # DD: shipments are created when order state goes to "delivery"
-    shipment = self.new_order.shipments.first # DD: there should be only one shipment
-    rate = shipment.shipping_rates.first{|r| r.shipping_method.id == reorder_shipping_method.id }
-    raise "No rate was found. TODO: Implement logic to select the cheapest rate." unless rate
-    shipment.selected_shipping_rate_id = rate.id
-    shipment.save
+    if self.line_item.order.shipments.any?
+      # DD: shipments are created when order state goes to "delivery"
+      shipment = self.new_order.shipments.first # DD: there should be only one shipment
+      rate = shipment.shipping_rates.first{|r| r.shipping_method.id == reorder_shipping_method.id }
+      raise "No rate was found. TODO: Implement logic to select the cheapest rate." unless rate
+      shipment.selected_shipping_rate_id = rate.id
+      shipment.save
+    else
+      self.new_order.next
+    end
   end
 
   def add_payment
