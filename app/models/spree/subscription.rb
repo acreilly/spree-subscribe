@@ -45,6 +45,7 @@ class Spree::Subscription < ActiveRecord::Base
       if self.remaining_time == 1
         self.notify_ending!
       end
+      save
     end
   end
 
@@ -103,7 +104,8 @@ class Spree::Subscription < ActiveRecord::Base
 
   def complete_reorder
     self.new_order.update!
-    self.new_order.next && self.new_order.save # -> complete
+    self.new_order.next unless self.new_order.complete?
+    self.new_order.save
   end
 
   def calculate_reorder_date!
@@ -176,6 +178,7 @@ class Spree::Subscription < ActiveRecord::Base
       self.suspend
       self.notify_ended!
     end
+    save
   end
 
   def notify_ended!
@@ -192,8 +195,8 @@ class Spree::Subscription < ActiveRecord::Base
   def check_reorder_date
     if reorder_on.nil? || reorder_on <= Date.today
       reorder_on = Date.tomorrow
-      save
     end
+    save
   end
 
   # DD: assumes interval attributes come in when created/updated in cart
