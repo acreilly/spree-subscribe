@@ -34,8 +34,10 @@ class Spree::Subscription < ActiveRecord::Base
   def reorder
     if self.state == 'active' && self.reorder_on == Date.today
       create_reorder &&
-      add_subscribed_line_item &&
-      select_shipping &&
+      add_subscribed_line_item
+
+      select_shipping unless self.line_item.order.shipments.nil?
+
       add_payment &&
       confirm_reorder &&
       complete_reorder &&
@@ -50,14 +52,13 @@ class Spree::Subscription < ActiveRecord::Base
 
   def create_reorder
     self.new_order = Spree::Order.create(
-        bill_address: self.billing_address.clone,
-        ship_address: self.shipping_address.clone,
-        subscription_id: self.id,
-        email: self.user.email
+      bill_address: self.billing_address.clone,
+      ship_address: self.shipping_address.clone,
+      subscription_id: self.id,
+      email: self.user.email
       )
     self.new_order.user_id = self.user_id
 
-    # DD: make it work with spree_multi_domain
     if self.new_order.respond_to?(:store_id)
       self.new_order.store_id = self.line_item.order.store_id
     end
@@ -210,7 +211,7 @@ class Spree::Subscription < ActiveRecord::Base
       :source_type => order.payments.first.source_type,
       :user_id => order.user_id,
       line_item: self.line_item
-    )
+      )
   end
 
   def self.reorder_states
